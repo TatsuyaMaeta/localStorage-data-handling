@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>checkBoxのデータをLocalStorageに入れる</title>
+    </head>
+    <body>
+        <h1>フォームの複数データをlocalstorageに入れる</h1>
+        <div id="text-wrapper">
+            ここに文字を入れてね<br />
+            <input type="text" id="inputText" />
+        </div>
+        <br />
+        <div id="checkbox-wrapper">
+            <label for="aa">
+                <input type="checkbox" id="aa" class="box" value="a__hoge" />aaa
+            </label>
+
+            <br />
+            <label for="bb">
+                <input type="checkbox" id="bb" class="box" value="b__hoge" />bbb
+            </label>
+            <br />
+            <label for="cc">
+                <input type="checkbox" id="cc" class="box" value="c__hoge" />ccc
+            </label>
+            <br />
+            <label for="dd">
+                <input type="checkbox" id="dd" class="box" value="d__hoge" />ddd
+            </label>
+            <br />
+            <label for="ee">
+                <input type="checkbox" id="ee" class="box" value="e__hoge" />eee
+            </label>
+            <br />
+            <label for="ff">
+                <input type="checkbox" id="ff" class="box" value="f__hoge" />fff
+            </label>
+            <br />
+            <button id="btn">ボタン</button>
+            <br />
+            <br />
+            <div id="output"></div>
+        </div>
+        <script
+            src="https://code.jquery.com/jquery-3.6.1.js"
+            integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            // 各inputboxのidを配列に入れて管理
+            const checkBoxIdArr = ["aa", "bb", "cc", "dd", "ee", "ff"];
+
+            let obj = {};
+            let arrForCheckbox = [];
+
+            const btn = document.getElementById("btn");
+            btn.addEventListener("click", function () {
+                // テキスト
+                const text = document.getElementById("inputText");
+                obj[text.id] = text.value;
+
+                // checkboxのデータを入れる
+                const boxes = document.getElementsByClassName("box");
+                let boxesLength = boxes.length;
+
+                obj["checkboxLength"] = boxes.length;
+
+                console.log({ boxes });
+                console.log(boxes.aa.value);
+                console.log(boxes[0].value);
+
+                for (let i = 0; i < boxesLength; i++) {
+                    var checkbox = document.getElementById(checkBoxIdArr[i]);
+                    let tmp_obj = {};
+                    if (checkbox.checked == true) {
+                        console.log(
+                            `id:${checkbox.id}_value:${checkbox.value}`
+                        );
+                        tmp_obj[checkbox.id] = checkbox.value;
+                        arrForCheckbox.push(tmp_obj);
+                    }
+                }
+
+                obj["answeredCheckbox"] = arrForCheckbox;
+                console.log({ obj });
+                const tmp_obj = JSON.stringify(obj);
+                localStorage.setItem("formData", tmp_obj);
+            });
+
+            loadLocalstorage = function () {
+                let outputText = "<table>";
+
+                const parsedObj = JSON.parse(localStorage.getItem("formData"));
+                console.log(parsedObj.answeredCheckbox.length);
+
+                outputText += `
+                    <tr>
+                        <th>inputテキスト</th>
+                        <td>${parsedObj.inputText}</td>
+                    </tr>
+                    `;
+                // localstorageからの取得
+                for (let i = 0; i < parsedObj.answeredCheckbox.length; i++) {
+                    const key = Object.keys(parsedObj.answeredCheckbox[i]);
+                    const v = parsedObj.answeredCheckbox[i][key];
+                    console.log(v);
+                    outputText += `
+                        <tr>
+                            <th>checkedバリュー${i + 1}</th>
+                            <td>${v}</td>
+                            </tr>`;
+                }
+                outputText += "</table>";
+                $("#output").html(outputText);
+            };
+            loadLocalstorage();
+        </script>
+    </body>
+</html>
