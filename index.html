@@ -62,7 +62,7 @@
 
                 // テキスト
                 const text = document.getElementById("inputText");
-                console.log(text[id]);
+                // console.log(text[id]);
                 obj[text.id] = text.value;
 
                 // checkboxのデータを入れる
@@ -121,6 +121,13 @@
                 $("#output").html(outputText);
             };
             loadLocalstorage();
+
+            // おまけ==localstorageに入っているkeyを全て取得する(配列の形で全て取得)
+            localStorage.setItem("キー1", "バリュー1");
+            localStorage.setItem("キー2", "バリュー2");
+            localStorage.setItem("キー3", "バリュー3");
+            const keysArray = Object.keys(localStorage);
+            console.log(keysArray);
         </script>
     </body>
 </html>
