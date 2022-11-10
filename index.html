@@ -53,13 +53,16 @@
             // 各inputboxのidを配列に入れて管理
             const checkBoxIdArr = ["aa", "bb", "cc", "dd", "ee", "ff"];
 
+            // ローカルストレージに入れる用のオブジェクト変数
             let obj = {};
-            let arrForCheckbox = [];
 
             const btn = document.getElementById("btn");
             btn.addEventListener("click", function () {
+                let arrForCheckbox = [];
+
                 // テキスト
                 const text = document.getElementById("inputText");
+                console.log(text[id]);
                 obj[text.id] = text.value;
 
                 // checkboxのデータを入れる
@@ -68,9 +71,9 @@
 
                 obj["checkboxLength"] = boxes.length;
 
-                console.log({ boxes });
-                console.log(boxes.aa.value);
-                console.log(boxes[0].value);
+                // console.log({ boxes });
+                // console.log(boxes.aa.value);
+                // console.log(boxes[0].value);
 
                 for (let i = 0; i < boxesLength; i++) {
                     var checkbox = document.getElementById(checkBoxIdArr[i]);
@@ -111,8 +114,9 @@
                         <tr>
                             <th>checkedバリュー${i + 1}</th>
                             <td>${v}</td>
-                            </tr>`;
+                        </tr>`;
                 }
+                // 頭とお尻でtableタグで挟む
                 outputText += "</table>";
                 $("#output").html(outputText);
             };
